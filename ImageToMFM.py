@@ -1,6 +1,11 @@
 import copy, numpy as np
 from PIL import Image
 
+# MFMのスケール
+scale = "$[scale.y=0.185 "
+# 空白として使う文字
+space_char = " "
+
 # 特定の文字数だけ0で埋める関数
 def zero_fill(val, n):
     if len(val) < n:
@@ -21,7 +26,7 @@ dot = [[[tuple(img[y][x]), [x*dot_size, y*dot_size], 1 if img[y][x][3] != 0 else
 
 # MFMアートの保存
 if mode == "0":
-    mfm, bg_color = "$[scale.y=0.75 ", [["ff", "ff", "ff", 0], ["ff", "ff", "ff", 0]]
+    mfm, bg_color = scale, [["ff", "ff", "ff", 0], ["ff", "ff", "ff", 0]]
     for y in range(canvas_size[1]):
         mfm_space, now_paint = "", 0
         for x in range(canvas_size[0]):
@@ -36,8 +41,8 @@ if mode == "0":
             elif bg_color[0][3] == 0 and now_paint == 1:
                 mfm += "]"
                 now_paint = 0
-            mfm_space += "　" if now_paint == 0 else ""
-            mfm += "　" if now_paint == 1 else ""
+            mfm_space += space_char if now_paint == 0 else ""
+            mfm += space_char if now_paint == 1 else ""
         mfm += "]" if now_paint == 1 else ""
         if y != canvas_size[1]-1:
             mfm += "\n"
@@ -48,7 +53,7 @@ if mode == "0":
 
 # 減色バージョン
 elif mode == "1":
-    mfm, bg_color = "$[scale.y=0.75 ", [["f", "f", "f", "0"], ["f", "f", "f", "0"]]
+    mfm, bg_color = scale, [["f", "f", "f", "0"], ["f", "f", "f", "0"]]
     for y in range(canvas_size[1]):
         mfm_space, now_paint = "", 0
         for x in range(canvas_size[0]):
@@ -65,8 +70,8 @@ elif mode == "1":
             elif bg_color[0][3] == "0" and now_paint == 1:
                 mfm += "]"
                 now_paint = 0
-            mfm_space += "　" if now_paint == 0 else ""
-            mfm += "　" if now_paint == 1 else ""
+            mfm_space += space_char if now_paint == 0 else ""
+            mfm += space_char if now_paint == 1 else ""
         mfm += "]" if now_paint == 1 else ""
         if y != canvas_size[1]-1:
             mfm += "\n"
